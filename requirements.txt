@@ -1,0 +1,14 @@
+# Dependencias Principales
+Flask>=3.0.0
+gunicorn>=21.2.0  
+python-dotenv>=1.0.1  
+
+# Dependencias de Machine Learning
+numpy>=1.26.4
+pandas>=2.2.0
+scikit-learn>=1.4.1
+joblib>=1.3.2  
+matplotlib>=3.8.3
+
+# Dependencias de Integración con Google
+google-genai>=0.1.0 
