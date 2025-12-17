@@ -4,9 +4,11 @@ import numpy as np
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+from flask_cors import CORS
 
 #Creacion de la instancia
 app = Flask(__name__)
+CORS(app)
 
 #Cargar entorno gemini
 load_dotenv(dotenv_path="environment/developer.env")
@@ -59,7 +61,6 @@ async def predict():
     model = genai.GenerativeModel("gemini-2.5-flash")
 
     #Prompt de analisis
-
     prompt = f"""
     Tu tarea como modelo es entregar recomendaciones de salud digital que deben ser solo 3 en base a
     la respuesta que entrege un modelo predictivo. Esta puede ser Saludable o No Saludable.
@@ -71,16 +72,20 @@ async def predict():
     No debes entregar informacion fuera del contexto de salud digital
     """
 
+    respuesta = ""
 
     try:
         response = await model.generate_content_async(prompt)
+        respuesta = response.text
     except:
-        return jsonify({"error": "Modelo de Gemini no disponible por sobrecarga, el servidor falló al cargarlo."}), 503
+        respuesta = "Servicio de recomendacion de IA no disponible"
+
+
 
     return jsonify({
         "prediccion_numerica": int(prediccion),
         "estado_salud": resultado,
-        "recomendacion_ia": response.text
+        "recomendacion_ia": respuesta
     })
 
 
